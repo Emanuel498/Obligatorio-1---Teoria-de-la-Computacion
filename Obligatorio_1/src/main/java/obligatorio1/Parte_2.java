@@ -34,7 +34,8 @@ public class Parte_2 {
         animales.add(new Raton("raton6"));
 
         cargarRatonesPosibles(animales, distanciaCaceria);
-        imprimirRatonesPosibles(animales);
+        comerRatones(animales);
+        //imprimirRatonesPosibles(animales);
     }
 
     public static void cargarRatonesPosibles(ArrayList<Animal> animales, int distanciaCaceria) {
@@ -53,23 +54,68 @@ public class Parte_2 {
             }
         }
     }
-    
-    /*// Siempre comenzara a comer el gato que tenga la menor cantidad de ratones para elegir.
-    public static void comerRatones(ArrayList<Animal> animales, int distanciaCaceria){
-        ArrayList<Animal> listaOrdenadaDeGatosQueVanAComer = ordenarListaPorGatos(animales);
-    }
 
-    public static ArrayList<Animal> ordenarListaPorGatos(ArrayList<Animal> animales){
-        ArrayList<Animal> listaOrdenada = new ArrayList<>();
-        for (int i = 0; i < animales.size(); i++) {
-            if(animales.get(i) instanceof Gato){
-                listaOrdenada.add(animales.get(i));
+    // Siempre comenzara a comer el gato que tenga la menor cantidad de ratones para elegir.
+    public static void comerRatones(ArrayList<Animal> animales) {
+        ArrayList<Gato> gatosCapacesComer = new ArrayList<>();
+        ArrayList<Raton> ratonPorSerComidos = new ArrayList<>();
+
+        Gato gatoActual;
+        for (int i = 0; i < 10; i++) {
+            if (animales.get(i) instanceof Gato) {
+                gatoActual = (Gato) animales.get(i);
+                if (!gatoActual.getRatonesPosibles().isEmpty()) {
+                    gatosCapacesComer.add(gatoActual);              // Agrego solo los gatos que tienen ratones para comer.
+                }
+            } else {
+                ratonPorSerComidos.add((Raton) animales.get(i));    // Agrego los ratones para luego comerlos y no tener que buscar en la lista generica.
             }
         }
-        listaOrdenada.sort(Comparator.comparing(Gato :: ratonesPosibles));
-        return listaOrdenada;
-    }*/
-    
+        while (!gatosCapacesComer.isEmpty()) {
+            Gato gatoConMenorNumerosDeRatones = proxGatoQueVaAComer(gatosCapacesComer);
+
+            Raton comido = gatoConMenorNumerosDeRatones.comerRaton(); //Como y elimino el raton del gato
+            comido.setGatoQueLoCazo(gatoConMenorNumerosDeRatones);
+            comido.setMurio(true);
+
+            //Ahora debería eleminar dicho raton de todos los gatos que lo tienen.
+            eliminarRatonDeTodosLosGatos(comido, gatosCapacesComer);
+        }
+
+        imprimirRatonesComidosPorQuien(ratonPorSerComidos);
+    }
+
+    public static void eliminarRatonDeTodosLosGatos(Raton comido, ArrayList<Gato> gatosCapacesComer) {
+        for (int i = 0; i < gatosCapacesComer.size(); i++) {
+            gatosCapacesComer.get(i).eliminarRaton(comido);
+        }
+    }
+
+    //Funcion que retorna el proximo gato que puede comer.
+    public static Gato proxGatoQueVaAComer(ArrayList<Gato> gatosCapacesComer) {
+        if (gatosCapacesComer.size() == 1) {
+            return gatosCapacesComer.get(0);
+        }
+        Gato gatoConMenorNumerosDeRatones = gatosCapacesComer.get(0);
+        for (int i = 1; i < gatosCapacesComer.size(); i++) {
+            if (gatosCapacesComer.get(i).getRatonesPosibles().isEmpty()) {
+                gatosCapacesComer.remove(i);                            // Elimino los gatos que ya no tienen ratones por comer
+            }
+            if (gatoConMenorNumerosDeRatones.getRatonesPosibles().size() > gatosCapacesComer.get(i).getRatonesPosibles().size()) {  //Busco el gato con menos cantidad de ratones para empezar a comer
+                gatoConMenorNumerosDeRatones = gatosCapacesComer.get(i);
+            }
+        }
+        return gatoConMenorNumerosDeRatones;
+    }
+
+    public static void imprimirRatonesComidosPorQuien(ArrayList<Raton> ratones) {
+        Raton ratonActual;
+        for (int i = 0; i < ratones.size(); i++) {
+            ratonActual = ratones.get(i);
+            System.out.println("Raton " + ratonActual.getNombre() + " comido por: " + ratonActual.getGatoQueLoCazo());
+        }
+    }
+
     public static void imprimirRatonesPosibles(ArrayList<Animal> animales) {
         Gato gatoActual;
         for (int i = 0; i < animales.size(); i++) {

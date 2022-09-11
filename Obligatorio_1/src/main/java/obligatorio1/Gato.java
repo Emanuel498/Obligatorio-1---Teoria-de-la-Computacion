@@ -32,10 +32,6 @@ public class Gato extends Animal {
     public ArrayList<Raton> getRatonesPosibles() {
         return ratonesPosibles;
     }
-    
-    public int getCantidadRatonesPosibles() {
-        return ratonesPosibles.size();
-    }
 
     public void agregarRatonesPosibles(Raton raton) {
         ratonesPosibles.add(raton);
@@ -43,6 +39,10 @@ public class Gato extends Animal {
     
     public void eliminarRaton(Raton raton) {
         ratonesPosibles.remove(raton);
+    }
+    
+    public Raton comerRaton(){
+        return ratonesPosibles.remove(0); //Elimino primer raton de la lista pero debo poner, afuera, que fue comido
     }
 
 }
