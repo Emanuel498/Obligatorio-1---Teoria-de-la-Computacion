@@ -43,12 +43,10 @@ public class Parte_2 {
         for (int i = 0; i < animales.size(); i++) {
             if (animales.get(i) instanceof Gato) {
                 gatoActual = (Gato) animales.get(i);
-                for (int j = 0; j < animales.size(); j++) {
+                for (int j = i - distanciaCaceria; j <= i + distanciaCaceria; j++) {
                     if (animales.get(j) instanceof Raton) {
                         Raton raton = (Raton) animales.get(j);
-                        if (distanciaCaceria >= Math.abs(i - j)) {
-                            gatoActual.agregarRatonesPosibles(raton);
-                        }
+                        gatoActual.agregarRatonesPosibles(raton);
                     }
                 }
             }
@@ -61,7 +59,7 @@ public class Parte_2 {
         ArrayList<Raton> ratonPorSerComidos = new ArrayList<>();
 
         Gato gatoActual;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < animales.size(); i++) {
             if (animales.get(i) instanceof Gato) {
                 gatoActual = (Gato) animales.get(i);
                 if (!gatoActual.getRatonesPosibles().isEmpty()) {
@@ -74,7 +72,11 @@ public class Parte_2 {
         while (!gatosCapacesComer.isEmpty()) {
             Gato gatoConMenorNumerosDeRatones = proxGatoQueVaAComer(gatosCapacesComer);
 
-            Raton comido = gatoConMenorNumerosDeRatones.comerRaton(); //Como y elimino el raton del gato
+            if (gatoConMenorNumerosDeRatones.getRatonesPosibles().size() == 0) {
+                break;
+            }
+            Raton comido = gatoConMenorNumerosDeRatones.comerRaton();   //Como y elimino el raton del gato
+            gatosCapacesComer.remove(gatoConMenorNumerosDeRatones);     // Elimino el gato que comio el raton
             comido.setGatoQueLoCazo(gatoConMenorNumerosDeRatones);
             comido.setMurio(true);
 
@@ -96,13 +98,17 @@ public class Parte_2 {
         if (gatosCapacesComer.size() == 1) {
             return gatosCapacesComer.get(0);
         }
-        Gato gatoConMenorNumerosDeRatones = gatosCapacesComer.get(0);
-        for (int i = 1; i < gatosCapacesComer.size(); i++) {
-            if (gatosCapacesComer.get(i).getRatonesPosibles().isEmpty()) {
-                gatosCapacesComer.remove(i);                            // Elimino los gatos que ya no tienen ratones por comer
-            }
-            if (gatoConMenorNumerosDeRatones.getRatonesPosibles().size() > gatosCapacesComer.get(i).getRatonesPosibles().size()) {  //Busco el gato con menos cantidad de ratones para empezar a comer
-                gatoConMenorNumerosDeRatones = gatosCapacesComer.get(i);
+        Gato gatoConMenorNumerosDeRatones = gatosCapacesComer.get(0);           // Aqui debería ser un valor capaz de ser cambiado y no 0
+        for (int i = 0; i < gatosCapacesComer.size(); i++) {
+            if (gatosCapacesComer.get(i).getRatonesPosibles().isEmpty()) {       // Pregunto si ya no tiene mas ratones y si ya comio
+                gatosCapacesComer.remove(i);                                                                            // Elimino los gatos que ya no tienen ratones por comer
+                if (gatosCapacesComer.size() == 1) {
+                    return gatosCapacesComer.get(0);
+                }
+            } else {
+                if (gatoConMenorNumerosDeRatones.getRatonesPosibles().size() > gatosCapacesComer.get(i).getRatonesPosibles().size()) {  //Busco el gato con menos cantidad de ratones para empezar a comer
+                    gatoConMenorNumerosDeRatones = gatosCapacesComer.get(i);
+                }
             }
         }
         return gatoConMenorNumerosDeRatones;
@@ -112,7 +118,12 @@ public class Parte_2 {
         Raton ratonActual;
         for (int i = 0; i < ratones.size(); i++) {
             ratonActual = ratones.get(i);
-            System.out.println("Raton " + ratonActual.getNombre() + " comido por: " + ratonActual.getGatoQueLoCazo());
+            if (ratonActual.getMurio()) {
+                System.out.println("Raton " + ratonActual.getNombre() + " comido por: " + ratonActual.getGatoQueLoCazo().getNombre());
+            }
+            else{
+                System.out.println("Raton " + ratonActual.getNombre() + " sigue vivo");
+            }
         }
     }
 

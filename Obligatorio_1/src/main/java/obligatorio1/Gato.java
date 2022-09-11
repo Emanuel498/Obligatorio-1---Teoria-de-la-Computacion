@@ -42,6 +42,7 @@ public class Gato extends Animal {
     }
     
     public Raton comerRaton(){
+        setComio(true);
         return ratonesPosibles.remove(0); //Elimino primer raton de la lista pero debo poner, afuera, que fue comido
     }
 
