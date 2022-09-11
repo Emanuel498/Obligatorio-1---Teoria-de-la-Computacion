@@ -5,16 +5,17 @@
 package obligatorio1;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
- *
- * @author USUARIO
+ * @author Emanuel Fonseca, Nicolas Prantl, German Marquez
  */
 public class Parte_2 {
 
     /**
-     * @param args the command line arguments
+     * Este metodo se encarga de iniciar la ejecución del apartado N`2 del obligatorio.
+     *
+     * @param args[]
+     * @return void
      */
     public static void main(String[] args) {
         int distanciaCaceria = 2;
@@ -35,9 +36,14 @@ public class Parte_2 {
 
         cargarRatonesPosibles(animales, distanciaCaceria);
         comerRatones(animales);
-        //imprimirRatonesPosibles(animales);
     }
 
+    /*
+        Metodo encargado de cargar todos los ratones que posee un gato, para comer, segun una distancia como parametro.
+        @param ArrayList<Animal> animales, es la lista de todos los animales. Posee instancia de Gato y Raton
+        @param int distanciaCaceria, es la distancia maxima que puede comer un gato desde su posicion
+        @return 
+    */
     public static void cargarRatonesPosibles(ArrayList<Animal> animales, int distanciaCaceria) {
         Gato gatoActual;
         for (int i = 0; i < animales.size(); i++) {
@@ -53,8 +59,13 @@ public class Parte_2 {
         }
     }
 
-    // Siempre comenzara a comer el gato que tenga la menor cantidad de ratones para elegir.
+    /*
+        Metodo encargado de comer la mayor cantidad de ratones posibles
+        @param ArrayList<Animal> animales, es la lista de todos los animales. Posee instancia de Gato y Raton
+        @return 
+    */
     public static void comerRatones(ArrayList<Animal> animales) {
+        // Separamos los gatos y ratones en listas separadas para poder hacer menos recorridos sobre la lisra animales.
         ArrayList<Gato> gatosCapacesComer = new ArrayList<>();
         ArrayList<Raton> ratonPorSerComidos = new ArrayList<>();
 
@@ -70,30 +81,41 @@ public class Parte_2 {
             }
         }
         while (!gatosCapacesComer.isEmpty()) {
+            // Obtengo el proximo gato que comera, sera el que tenga el menor numero de eleccion de ratones
             Gato gatoConMenorNumerosDeRatones = proxGatoQueVaAComer(gatosCapacesComer);
 
             if (gatoConMenorNumerosDeRatones.getRatonesPosibles().size() == 0) {
                 break;
             }
-            Raton comido = gatoConMenorNumerosDeRatones.comerRaton();   //Como y elimino el raton del gato
+            Raton comido = gatoConMenorNumerosDeRatones.comerRaton();   // Como y elimino el raton del gato
             gatosCapacesComer.remove(gatoConMenorNumerosDeRatones);     // Elimino el gato que comio el raton
-            comido.setGatoQueLoCazo(gatoConMenorNumerosDeRatones);
+            comido.setGatoQueLoCazo(gatoConMenorNumerosDeRatones);      // Seteo el gato que comio al raton
             comido.setMurio(true);
 
-            //Ahora debería eleminar dicho raton de todos los gatos que lo tienen.
+            // Elemino dicho raton de todos los gatos que lo tienen.
             eliminarRatonDeTodosLosGatos(comido, gatosCapacesComer);
         }
-
+        // Se imprime por consola los ratones que fueron comidos por respectivo gato de caza y los ratones que no lo fueron
         imprimirRatonesComidosPorQuien(ratonPorSerComidos);
     }
 
+    /*
+        Metodo encargado eliminar un raton de todos los gatos que posean dicho raton.
+        @param ArrayList<Gato> gatosCapacesComer, son todos los gatos que poseen ratones para comer
+        @param Raton comido, raton que sera eliminado de todos los gatos que poseen el raton en sus posibilidades para comer.
+        @return 
+    */
     public static void eliminarRatonDeTodosLosGatos(Raton comido, ArrayList<Gato> gatosCapacesComer) {
         for (int i = 0; i < gatosCapacesComer.size(); i++) {
             gatosCapacesComer.get(i).eliminarRaton(comido);
         }
     }
 
-    //Funcion que retorna el proximo gato que puede comer.
+    /*
+        Metodo encargado de devolver el proximo gato que comera a un raton.
+        @param ArrayList<Gato> gatosCapacesComer, son todos los gatos que poseen ratones para comer
+        @return Gato gato, sera el gato con menor numero de ratones a comer.
+    */
     public static Gato proxGatoQueVaAComer(ArrayList<Gato> gatosCapacesComer) {
         if (gatosCapacesComer.size() == 1) {
             return gatosCapacesComer.get(0);
@@ -114,6 +136,11 @@ public class Parte_2 {
         return gatoConMenorNumerosDeRatones;
     }
 
+    /*
+        Metodo encargado de imprimir por consola los ratones que fueron comidos y los que no.
+        @param ArrayList<Raton>, lista de todos los ratones que habia en lista princial 'animales'
+        @return
+    */
     public static void imprimirRatonesComidosPorQuien(ArrayList<Raton> ratones) {
         Raton ratonActual;
         for (int i = 0; i < ratones.size(); i++) {
@@ -127,6 +154,11 @@ public class Parte_2 {
         }
     }
 
+    /*
+        Metodo encargado de imprimir por consola que ratones puede comer cada gato.
+        @param ArrayList<Animal> animales, es la lista de todos los animales. Posee instancia de Gato y Raton
+        @return
+    */
     public static void imprimirRatonesPosibles(ArrayList<Animal> animales) {
         Gato gatoActual;
         for (int i = 0; i < animales.size(); i++) {

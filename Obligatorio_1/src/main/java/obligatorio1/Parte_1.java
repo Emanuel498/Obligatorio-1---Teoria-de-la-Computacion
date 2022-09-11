@@ -11,15 +11,21 @@ package obligatorio1;
 public class Parte_1 {
 
     /**
-     * @param args the command line arguments
+     * Este metodo se encarga de iniciar la ejecución del apartado N`1 del obligatorio.
+     *
+     * @param args[]
+     * @return void
      */
     public static void main(String[] args) {
         Grafo g = new Grafo();
         g.cargarGrafo(".\\src\\main\\java\\obligatorio1\\conexiones_hora.txt");
         g.imprimirCamino("Montevideo", "Manama");
-        System.out.println();  
+        System.out.println();
         g.cargarGrafo(".\\src\\main\\java\\obligatorio1\\conexiones_costo.txt");
         g.imprimirCamino("Montevideo", "Manama");
+        System.out.println();
+        g.cargarGrafo(".\\src\\main\\java\\obligatorio1\\conexiones_relacion_costo_hora.txt");
+        g.imprimirCamino("Montevideo", "Manama");
     }
-    
+
 }

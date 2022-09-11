@@ -1,0 +1,28 @@
+Montevideo,Buenos Aires,300
+Montevideo,San Pablo,200
+Montevideo,Lima,117
+Buenos Aires,Madrid,192
+Buenos Aires,Frankfurt,170
+Buenos Aires,Roma,150
+San Pablo,Madrid,220
+San Pablo,Frankfurt,162
+San Pablo,Roma,209
+Lima,Madrid,191
+Lima,Frankfurt,127
+Lima,Roma,113
+Madrid,Bandar Abbas,164
+Madrid,Abu Dabi,743
+Madrid,Dubai,494
+Frankfurt,Bandar Abbas,178
+Frankfurt,Abu Dabi,350
+Frankfurt,Dubai,358
+Roma,Bandar Abbas,111
+Roma,Abu Dabi,317
+Roma,Dubai,360
+Bandar Abbas,Doha,500
+Bandar Abbas,Manama,584
+Abu Dabi,Doha,9300
+Abu Dabi,Manama,7500
+Dubai,Doha,9600
+Dubai,Manama,8800
+Manama,Doha,3400

@@ -5,21 +5,29 @@
 package obligatorio1;
 
 /**
+ * Clase abstracta que contendra las caracteristicas basicas de los animales.
  *
- * @author USUARIO
+ * @author Emanuel Fonseca, Nicolas Prantl, German Marquez
  */
 public abstract class Animal {
 
     // clase abstracta animal
-    // atributos
+    // Atributo que contednr[a el nombre identificador del Animal.
     private String nombre;
 
-    // constructor
+    /*
+        Constructor de objeto animal a traves del nombre
+        @param nombre es una cadena de texto con el nombre identificador del animal
+    */
     public Animal(String nombre) {
         this.nombre = nombre;
     }
 
-    // metodos
+    /*
+        Metodo encargado de devolver el nombre identificador del animal.
+        @param
+        @return nombre identificador del animal
+    */
     public String getNombre() {
         return nombre;
     }

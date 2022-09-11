@@ -3,16 +3,32 @@ package obligatorio1;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+/**
+ * @author Emanuel Fonseca, Nicolas Prantl, German Marquez
+ */
 public class Grafo {
 
+    // Matriz de ayacencia del grafo.
     private int[][] matrizAdyacencia;
+    
+    // Array con todos los paises poasibles para viajar.
     private String[] paises;
 
+    /*
+        Constructor de objeto grafo
+        @param 
+        Al crear un nueva instancia, se crea una matriz de adyacencia vacia y una lista de paises vacias del mismo.
+    */
     public Grafo() {
         matrizAdyacencia = new int[0][0];
         paises = new String[0];
     }
 
+    /*
+        Metodo encargado de cargar grafo a partir de la ruta de un archivo.
+        @param String archivo, path del archivo
+        @return
+    */
     public void cargarGrafo(String archivo) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(archivo));
@@ -37,6 +53,11 @@ public class Grafo {
         }
     }
 
+    /*
+        Metodo encargado de agregar un pais al array de paises del grafo.
+        @param String pais, nombre del nuevo pais a agregar
+        @return
+    */
     private void agregarPais(String pais) {
         if (indicePais(pais) == -1) {
             // crear un nuevo arreglo de paises
@@ -57,11 +78,16 @@ public class Grafo {
                     matrizAdyacencia2[i][j] = matrizAdyacencia[i][j];
                 }
             }
-            // asignar la nueva matriz de adyacencia
+            // Asignar la nueva matriz de adyacencia
             matrizAdyacencia = matrizAdyacencia2;
         }
     }
 
+    /*
+        Metodo encargado de devolver el indice del pais dentro del array de paises.
+        @param String archivo, path del archivo
+        @return indice del pais dentro del array paises, -1 si no existe en el array.
+    */
     private int indicePais(String pais) {
         for (int i = 0; i < paises.length; i++) {
             if (paises[i].equals(pais)) {
@@ -71,6 +97,11 @@ public class Grafo {
         return -1;
     }
 
+    /*
+        Metodo encargado de imprimir por consola el camino de paises mas corto entre dos paises.
+        @param String pais1, pais2, son el nombre de los paises a buscar el menor camino dentro del array paises.
+        @return
+    */
     public void imprimirCamino(String pais1, String pais2) {
         int[][] matrizFloydWarshall = floydWarshall();
         int i = indicePais(pais1);
@@ -86,6 +117,11 @@ public class Grafo {
         }
     }
 
+    /*
+        Metodo encargado de encontrar el menor camino entre cada vertice del grafo segun algortimo de Floyd-Warshall.
+        @param 
+        @return matriz de adyacencia luego de aplicado algoritmo Floyd-Warshall.
+    */
     private int[][] floydWarshall() {
         int[][] matrizFloydWarshall = new int[paises.length][paises.length];
         // copiar los valores de la matriz de adyacencia
@@ -111,6 +147,12 @@ public class Grafo {
         return matrizFloydWarshall;
     }
 
+    /*
+        Metodo encargado de imprimir por consola un camino en especifico del grafo.
+        @param  int i,int j, indices a buscar dentro de la matriz de adyacencia.
+        @param  int[][] matrizFloydWarshall, matriz de adyacencia luego de aplicado el algoritmo de Floyd-Warshall.
+        @return.
+    */
     private void imprimirCamino(int i, int j, int[][] matrizFloydWarshall) {
         for (int k = 0; k < paises.length; k++) {
             if (matrizFloydWarshall[i][k] != 0 && matrizFloydWarshall[k][j] != 0) {
